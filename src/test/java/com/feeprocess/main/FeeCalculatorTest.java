@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import main.java.com.feeprocess.common.StringConstants;
@@ -15,14 +16,18 @@ import main.java.com.feeprocess.data.process.strategy.TransactionDataProcessStra
 import main.java.com.feeprocess.model.Transaction;
 
 public class FeeCalculatorTest {
+	List<Transaction> trxList;
+	
+	@Before
+	public void initData() throws ParseException {
+		trxList = createDummyData();
+	}
 
 	@Test
-	public void test001() throws ParseException {
-		List<Transaction> lst = createDummyData();
-		
+	public void test001() {
 		ProcessContext<Transaction> context = new ProcessContext<>(new TransactionDataProcessStrategy());
+		List<Transaction> processedTxn = context.executeStrategy(trxList);
 		
-		List<Transaction> processedTxn = context.executeStrategy(lst);
 		for(Transaction tx : processedTxn) {
 			if(tx.getTxnId().equals("t1") || tx.getTxnId().equals("t2")) {
 				assertEquals(Double.valueOf(10.0), tx.getTxnFee());
@@ -63,7 +68,7 @@ public class FeeCalculatorTest {
 		t2.setTxnId("t2");
 		t2.setClientId("c1");
 		t2.setSecurityId("s1");
-		t2.setTxnDate(new SimpleDateFormat("dd-MM-yyyy").parse("23-11-2013"));
+		t2.setTxnDate(new SimpleDateFormat(StringConstants.DATE_FORMAT).parse("23-11-2013"));
 		t2.setTxnType(StringConstants.SELL);
 		t2.setMarketVal(101.0);
 		t2.setPriority("Y");
@@ -72,7 +77,7 @@ public class FeeCalculatorTest {
 		t3.setTxnId("t3");
 		t3.setClientId("c3");
 		t3.setSecurityId("s3");
-		t3.setTxnDate(new SimpleDateFormat("dd-MM-yyyy").parse("21-01-2014"));
+		t3.setTxnDate(new SimpleDateFormat(StringConstants.DATE_FORMAT).parse("21-01-2014"));
 		t3.setTxnType(StringConstants.SELL);
 		t3.setMarketVal(101.0);
 		t3.setPriority("Y");
@@ -81,7 +86,7 @@ public class FeeCalculatorTest {
 		t4.setTxnId("t4");
 		t4.setClientId("c4");
 		t4.setSecurityId("s4");
-		t4.setTxnDate(new SimpleDateFormat("dd-MM-yyyy").parse("11-01-2014"));
+		t4.setTxnDate(new SimpleDateFormat(StringConstants.DATE_FORMAT).parse("11-01-2014"));
 		t4.setTxnType(StringConstants.SELL);
 		t4.setMarketVal(101.0);
 		t4.setPriority("N");
@@ -90,7 +95,7 @@ public class FeeCalculatorTest {
 		t5.setTxnId("t5");
 		t5.setClientId("c5");
 		t5.setSecurityId("s5");
-		t5.setTxnDate(new SimpleDateFormat("dd-MM-yyyy").parse("10-02-2014"));
+		t5.setTxnDate(new SimpleDateFormat(StringConstants.DATE_FORMAT).parse("10-02-2014"));
 		t5.setTxnType(StringConstants.BUY);
 		t5.setMarketVal(102.0);
 		t5.setPriority("N");
